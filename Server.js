@@ -1,6 +1,8 @@
 const WebSocket = require("ws");
 
-const wss = new WebSocket.Server({ port: 3000 });
+const port = process.env.PORT || 3000;
+
+const wss = new WebSocket.Server({ port });
 
 wss.on("connection", ws => {
 
@@ -8,7 +10,8 @@ wss.on("connection", ws => {
 
     ws.on("message", message => {
 
-        // an alle senden
+        console.log(message.toString());
+
         wss.clients.forEach(client => {
             if (client.readyState === WebSocket.OPEN) {
                 client.send(message.toString());
@@ -16,3 +19,5 @@ wss.on("connection", ws => {
         });
     });
 });
+
+console.log("Server läuft auf Port", port);
